@@ -1,1 +1,13 @@
 #!/bin/bash
+
+# Read config
+# Maybe from -c
+# First from $XDG_CONFIG_HOME
+# Then $HOME/.config/qeman/config
+
+# Then load data
+# Maybe from -d
+# First from what was in config
+# Then from $XDG_DATA_DIRECTORY
+# Then from $HOME/.local/share/qeman/
+# This is where one file per setup will be saved
