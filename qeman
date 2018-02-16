@@ -71,43 +71,53 @@ setup_new() {
 	if [[ -z $1 ]]; then
 		echo "No name specified"
 		exit 1
-	else
-		cfg_writer > $qeman_file
-		echo "[$1]" >> $qeman_file
-		echo "localtime=enable" >> $qeman_file
-		parse_config
 	fi
 
+	cfg_writer > $qeman_file
+	echo "[$1]" >> $qeman_file
+	echo "localtime=enable" >> $qeman_file
+	parse_config
 }
 
 setup_cp() {
 	if [[ -z $1 || -z $2 ]]; then
 		echo "Not enough arguments"
 		exit 1
-	else
-		cfg_writer > $qeman_file
-		output=$(sed -n -e "/$1\]/,/^\[/{ /$1\]/d; /^\[/d; p; }" qeman.setups)
-		if [[ -z $output ]]; then
-			echo "Invalid source"
-			exit 1
-		fi
-		echo "Copying $1 to $2"
-		echo "[$2]" >> $qeman_file
-		echo "$output" >> $qeman_file
-		parse_config
 	fi
+
+	cfg_writer > $qeman_file
+	output=$(sed -n -e "/$1\]/,/^\[/{ /$1\]/d; /^\[/d; p; }" qeman.setups)
+	if [[ -z $output ]]; then
+		echo "Invalid source"
+		exit 1
+	fi
+	echo "Copying $1 to $2"
+	echo "[$2]" >> $qeman_file
+	echo "$output" >> $qeman_file
+	parse_config
 }
 
 setup_mv() {
 	if [[ -z $1 || -z $2 ]]; then
 		echo "Not enough arguments"
 		exit 1
-	else
-		cfg_writer > $qeman_file
-		echo "Moving $1 to $2"
-		sed -i "s/$1/$2/g" $qeman_file
-		parse_config
 	fi
+
+	cfg_writer > $qeman_file
+	echo "Moving $1 to $2"
+	sed -i "s/$1/$2/g" $qeman_file
+	parse_config
+}
+
+setup_rm() {
+	if ! grep -q "\[$1\]" $qeman_file; then
+		echo "Setup not found"
+		exit 1
+	fi	
+
+	cfg_writer > $qeman_file
+	# TODO: implement rm
+	parse_config
 }
 
 # Handling the mode commands
@@ -175,7 +185,7 @@ if [[ $1 == setup ]]; then
 	elif [[ $2 == mv ]]; then
 		setup_mv $3 $4
 	elif [[ $2 == rm ]]; then
-		echo 1
+		setup_rm $3
 	elif [[ $2 == ls ]]; then
 		print_setups
 	else
