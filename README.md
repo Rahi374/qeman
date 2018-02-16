@@ -1,3 +1,4 @@
+
 ### Functions
 
 - qeman run NAME
@@ -22,3 +23,8 @@
 - qeman comp enable/disable kvm
 - qeman comp enable/disable boot_from_disk
 - qeman comp arch ARCH
+
+### Env vars
+
+- TMPFS - defaults to /tmp, only neccesary if tmpfs not mounted at /tmp
+- QEMAN_CONFIG_FILE - specify non-default config file location
