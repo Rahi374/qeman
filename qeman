@@ -65,6 +65,19 @@ print_setups() {
 	done
 }
 
+setup_new() {
+	if [[ -z $1 ]]; then
+		echo "No name specified"
+		exit 1;
+	else
+		cfg_writer > $qeman_file
+		echo "[$1]" >> $qeman_file
+		echo "localtime=enable" >> $qeman_file
+		parse_config
+	fi
+
+}
+
 # Handling the mode commands
 if [ "$1" == mode ]; then
 	if [ "$2" == local ]; then
@@ -111,16 +124,19 @@ else
 fi
 
 # Parse the config
-if ! cfg_parser "$qeman_file" ; then
-	echo "error 1"
-	exit 1
-fi
+parse_config() {
+	if ! cfg_parser "$qeman_file" ; then
+		echo "error 1"
+		exit 1
+	fi
+}
+parse_config
 
 
 # Command: setup
 if [[ $1 == setup ]]; then
 	if [[ $2 == new ]]; then
-		echo 1
+		setup_new $3
 	elif [[ $2 == cp ]]; then
 		echo 1
 	elif [[ $2 == mv ]]; then
