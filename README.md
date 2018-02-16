@@ -108,6 +108,15 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 - QEMAN_CONFIG_FILE - specify non-default config file location
 
 
+## Undefined Behavior
+
+ie. "I haven't tested it, and it's likely to do something
+unanticipated (aka bad), so don't blame me if you do it and
+something breaks!"
+
+- Have duplicate section/setup names
+- section/setup lines' opening square bracket not being flush left
+
 ## Rationale
 
 I like qemu, but I found that the commands were continuously
