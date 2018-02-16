@@ -78,7 +78,6 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 #### setup
 
 - qeman setup new NAME
-- qeman setup load NAME
 - qeman setup cp SRC DEST
 - qeman setup mv SRC DEST
 - qeman setup rm NAME

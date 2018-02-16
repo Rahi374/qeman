@@ -121,8 +121,6 @@ fi
 if [[ $1 == setup ]]; then
 	if [[ $2 == new ]]; then
 		echo 1
-	elif [[ $2 == load ]]; then
-		echo 1
 	elif [[ $2 == cp ]]; then
 		echo 1
 	elif [[ $2 == mv ]]; then
