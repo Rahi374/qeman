@@ -85,7 +85,10 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 - **qeman setup cp SRC DEST**
   - copies the section SRC to a new section called DEST, and copies over all the settings as well
   - all these changes are done within the same setups file
-- qeman setup mv SRC DEST
+- **qeman setup mv SRC DEST**
+  - renames the section SRC to section DEST
+  - that's it. Also, there's no overwriting; only simple renaming.
+  - moving setups between setups files is another thing that this command does *not* do
 - qeman setup rm NAME
 - **qeman setup ls**
   - lists the current setups and their settings
