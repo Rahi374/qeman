@@ -3,11 +3,17 @@
 
 (bold has been implemented)
 
+#### run
+
 - qeman run NAME
+
+#### mode
 
 - **qeman mode**
 - **qeman mode local**
 - **qeman mode global**
+
+#### setup
 
 - qeman setup new NAME
 - qeman setup load NAME
@@ -17,9 +23,11 @@
 - qeman setup ls
 - qeman setup pcs
 
+#### comp
+
 - qeman comp add/rm hdX NAME
 - qeman comp add/rm cd NAME
-- qeman comp add/rm portfwd HOST_PORT:GUEST_PORT
+- qeman comp add/rm portfwd [tcp|udp]::HOST_PORT-:GUEST_PORT
 - qeman comp mem VALUE
 - qeman comp enable/disable localtime
 - qeman comp enable/disable kvm
