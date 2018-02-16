@@ -20,7 +20,7 @@
 - qeman setup cp SRC DEST
 - qeman setup mv SRC DEST
 - qeman setup rm NAME
-- qeman setup ls
+- **qeman setup ls**
 - qeman setup pcs
 
 #### comp
