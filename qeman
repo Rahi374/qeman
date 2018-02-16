@@ -7,6 +7,7 @@ current_mode=$default_mode
 mode_file=$tmpfs/qeman_mode
 #mode_file=./.qeman-mode
 
+# These are the possible filenames and paths of the config file
 config_fn=qeman.setups
 local_config_fn=./$config_fn
 xdg_config_fn=$XDG_CONFIG_HOME/qeman/$config_fn
@@ -16,6 +17,53 @@ custom_config_fn=$QEMAN_CONFIG_FILE
 # This is our config file var
 # no default value
 qeman_config_file=""
+
+# Source the config parser
+source "${0%/*}"/bash-ini-parser
+
+print_setups() {
+	for i in $1 ; do
+		echo "[$i]"
+		cfg_section_$i
+		if [[ -n $hda ]]; then
+			echo "  hda = $hda"; fi
+		if [[ -n $hdb ]]; then
+			echo "  hdb = $hdb"; fi
+		if [[ -n $hdc ]]; then
+			echo "  hdc = $hdc"; fi
+		if [[ -n $hdd ]]; then
+			echo "  hdd = $hdd"; fi
+		if [[ -n $hde ]]; then
+			echo "  hde = $hde"; fi
+		if [[ -n $cd ]]; then
+			echo "  cd = $cd"; fi
+		if [[ -n $portfwd ]]; then
+			echo "  portfwd = $portfwd"; fi
+		if [[ -n $mem ]]; then
+			echo "  mem = $mem"; fi
+
+		if [[ -z $localtime ]]; then
+			echo "  localtime = disable"
+		else
+			echo "  localtime = $localtime"
+		fi
+
+		if [[ -z $kvm ]]; then
+			echo "  kvm = disable"
+		else
+			echo "  kvm = $kvm"
+		fi
+
+		if [[ -z $boot_from_disk ]]; then
+			echo "  boot_from_disk = disable"
+		else
+			echo "  boot_from_disk = $boot_from_disk"
+		fi
+
+		if [[ -n $arch ]]; then
+			echo "  arch = $arch"; fi
+	done
+}
 
 # Handling the mode commands
 if [ "$1" == mode ]; then
@@ -62,10 +110,30 @@ else
 	exit 1
 fi
 
-source "${0%/*}"/bash-ini-parser
-
 # Parse the config
 if ! cfg_parser "$qeman_file" ; then
 	echo "error 1"
 	exit 1
 fi
+
+
+# Command: setup
+if [[ $1 == setup ]]; then
+	if [[ $2 == new ]]; then
+		echo 1
+	elif [[ $2 == load ]]; then
+		echo 1
+	elif [[ $2 == cp ]]; then
+		echo 1
+	elif [[ $2 == mv ]]; then
+		echo 1
+	elif [[ $2 == rm ]]; then
+		echo 1
+	elif [[ $2 == ls ]]; then
+		setups=$(compgen -A function | grep cfg_section | sed 's/cfg_section_//g')
+		print_setups $setups
+	else
+		echo "Unrecognized command: $2"
+	fi
+fi
+# End command: setup
