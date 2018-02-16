@@ -78,11 +78,13 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 #### setup
 
 - **qeman setup new NAME**
-  - adds a new section (ie. "setup") to the setups file
+  - adds a new section called NAME (ie. "setup") to the setups file
   - enables `localtime` by default, since the ini parser will break if there's no key-value pairs in a section :/
     - `localtime` was chosen as the default because I anticipated that this is probably the best (most useful and least detrimental) "default" option
   - `kvm` and `boot_from_disk` will appear as disabled; this is because these two (along with `localtime`) are assumed to be disabled if they are not specified.
-- qeman setup cp SRC DEST
+- **qeman setup cp SRC DEST**
+  - copies the section SRC to a new section called DEST, and copies over all the settings as well
+  - all these changes are done within the same setups file
 - qeman setup mv SRC DEST
 - qeman setup rm NAME
 - **qeman setup ls**
@@ -110,7 +112,8 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 
 ## Undefined Behavior
 
-ie. "I haven't tested it, and it's likely to do something
+ie. "I haven't tested it, I'm probably not going to,
+and it's likely to do something
 unanticipated (aka bad), so don't blame me if you do it and
 something breaks!"
 
