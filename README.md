@@ -1,11 +1,13 @@
 
 ### Functions
 
+(bold has been implemented)
+
 - qeman run NAME
 
-- qeman mode
-- qeman mode local
-- qeman mode global
+- **qeman mode**
+- **qeman mode local**
+- **qeman mode global**
 
 - qeman setup new NAME
 - qeman setup load NAME
