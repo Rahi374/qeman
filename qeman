@@ -22,7 +22,8 @@ qeman_config_file=""
 source "${0%/*}"/bash-ini-parser
 
 print_setups() {
-	for i in $1 ; do
+	setups=$(compgen -A function | grep cfg_section | sed 's/cfg_section_//g')
+	for i in $setups ; do
 		echo "[$i]"
 		cfg_section_$i
 		if [[ -n $hda ]]; then
@@ -144,8 +145,7 @@ if [[ $1 == setup ]]; then
 	elif [[ $2 == rm ]]; then
 		echo 1
 	elif [[ $2 == ls ]]; then
-		setups=$(compgen -A function | grep cfg_section | sed 's/cfg_section_//g')
-		print_setups $setups
+		print_setups
 	else
 		echo "Unrecognized command: $2"
 	fi
