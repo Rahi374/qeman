@@ -1,3 +1,56 @@
+# qeman
+
+A simple CLI manager for qemu setups
+
+As the description says, this is a _simple_ CLI manager.
+It does not do heavy error checking (it does basic error checking),
+and cannot handle very advanced or exotic qemu setups. The supported
+settings are listed/suggested below.
+
+## Installation
+
+The only dependency is bash.
+
+Until I move `bash-ini-parser` into the `qeman` script file, that
+is a dependency as well, and these two are required to be in the
+same directory.
+
+(`bash-ini-parser` came from <https://github.com/albfan/bash-ini-parser>)
+
+## How it works
+
+There is a single config file, known as the "setups file".
+In practice, it is a single file called `qeman.setups`. It is in ini
+format, where each section corresponds to a "setup", and the key-value
+pairs in each section make up the settings for each setup. 
+
+This file may be located anywhere, but by default in "local" mode
+it is looked for in the current directory, and by default in "global"
+mode it is looked for in `$XDG_CONFIG_HOME/qeman` and
+`$HOME/.config/qeman`, in that order. The file path can always be
+be specified in the environment variable `QEMAN_CONFIG_FILE`,
+regardless of the mode.
+
+Note that the mode is specified for the entire filesystem,
+in `/tmp/qeman_mode`. If tmpfs is not mounted at `/tmp`, then the
+tmpfs mountpoint must be specified in the environment variable
+`TMPFS` without the trailing slash.
+
+All qeman operations/comands are done on the setups file.
+
+Example setups file:
+```
+[arch2]
+hda=~/disk-images/hd/arch2.qcow2
+hdb=~/disk-images/hd/hdrive.qcow2
+cd=~/disk-images/cd/archlinux-2017.06.01-x86_64.iso
+portfwd=tcp::2222-:22
+mem=2048
+localtime=enable
+kvm=enable
+boot_from_disk=enable
+arch=x86_64
+```
 
 ### Functions
 
@@ -50,3 +103,16 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 
 - TMPFS - defaults to /tmp, only neccesary if tmpfs not mounted at /tmp
 - QEMAN_CONFIG_FILE - specify non-default config file location
+
+
+## Rationale
+
+I like qemu, but I found that the commands were continuously
+getting longer and harder, if even possible, to remember.
+I found myself always doing reverse-i-search for `qemu` until I
+got the right one. I eventually wrote a script, but really, it
+was just one of my long commands with the drive name swapped out
+for a command line argument. Then I figured it might be nice to have
+a vm manager. I'm fairly certain one exists out there somewhere, but
+I guess I didn't look hard enough, and I wanted something minimalist,
+so I decided to write my own, and this is it.
