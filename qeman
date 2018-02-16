@@ -98,6 +98,18 @@ setup_cp() {
 	fi
 }
 
+setup_mv() {
+	if [[ -z $1 || -z $2 ]]; then
+		echo "Not enough arguments"
+		exit 1
+	else
+		cfg_writer > $qeman_file
+		echo "Moving $1 to $2"
+		sed -i "s/$1/$2/g" $qeman_file
+		parse_config
+	fi
+}
+
 # Handling the mode commands
 if [ "$1" == mode ]; then
 	if [ "$2" == local ]; then
@@ -161,7 +173,7 @@ if [[ $1 == setup ]]; then
 	elif [[ $2 == cp ]]; then
 		setup_cp $3 $4
 	elif [[ $2 == mv ]]; then
-		echo 1
+		setup_mv $3 $4
 	elif [[ $2 == rm ]]; then
 		echo 1
 	elif [[ $2 == ls ]]; then
