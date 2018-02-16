@@ -25,6 +25,7 @@ print_setups() {
 	setups=$(compgen -A function | grep cfg_section | sed 's/cfg_section_//g')
 	for i in $setups ; do
 		echo "[$i]"
+		cfg_unset
 		cfg_section_$i
 		if [[ -n $hda ]]; then
 			echo "  hda = $hda"; fi
@@ -69,7 +70,7 @@ print_setups() {
 setup_new() {
 	if [[ -z $1 ]]; then
 		echo "No name specified"
-		exit 1;
+		exit 1
 	else
 		cfg_writer > $qeman_file
 		echo "[$1]" >> $qeman_file
@@ -144,6 +145,7 @@ fi
 
 # Parse the config
 parse_config() {
+	#echo "Parsing config!"
 	if ! cfg_parser "$qeman_file" ; then
 		echo "error 1"
 		exit 1
