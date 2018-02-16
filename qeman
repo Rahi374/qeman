@@ -1,13 +1,22 @@
 #!/bin/bash
 
+source bash-init-parser
+
 # Read config
 # Maybe from -c
 # First from $XDG_CONFIG_HOME
 # Then $HOME/.config/qeman/config
+if [ -f $1 ]; then
+	qeman_file=$1
+elif [ -f ./qeman.setup ]
+	qeman_file=./qeman.setup
+elif [ -f $XDG_CONFIG_HOME/qeman/setups ]
+	qeman_file=$XDG_CONFIG_HOME/qeman/setups
+elif [ -f $HOME/.config/qeman/setups ]
+	qeman_file=$HOME/.config/qeman/setups
+fi
 
-# Then load data
-# Maybe from -d
-# First from what was in config
-# Then from $XDG_DATA_DIRECTORY
-# Then from $HOME/.local/share/qeman/
-# This is where one file per setup will be saved
+if ! cfg_parser $qeman_file ; then
+	echo "error 1"
+	exit 1
+fi
