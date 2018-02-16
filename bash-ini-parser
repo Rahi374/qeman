@@ -203,9 +203,4 @@ function cfg_update {
    eval "function $item"
 }
 
-#Test harness
-if [ $# != 0 ]
-then
-   $@
-fi
 # vim: filetype=sh
