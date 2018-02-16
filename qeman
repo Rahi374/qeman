@@ -39,18 +39,23 @@ fi
 # Maybe from -c
 # First from $XDG_CONFIG_HOME
 # Then $HOME/.config/qeman/config
-if [ -f $1 ]; then
-	qeman_file=$1
-elif [ -f ./qeman.setup ]
+if [ -n "$1" ]; then
+	qeman_file="$1"
+elif [ -f ./qeman.setup ]; then
 	qeman_file=./qeman.setup
-elif [ -f $XDG_CONFIG_HOME/qeman/setups ]
-	qeman_file=$XDG_CONFIG_HOME/qeman/setups
-elif [ -f $HOME/.config/qeman/setups ]
-	qeman_file=$HOME/.config/qeman/setups
+elif [ -f "$XDG_CONFIG_HOME/qeman/setups" ]; then
+	qeman_file="$XDG_CONFIG_HOME/qeman/setups"
+elif [ -f "$HOME/.config/qeman/setups" ]; then
+	qeman_file="$HOME/.config/qeman/setups"
+else
+	echo "No qeman file found"
+	exit 1
 fi
 
-if ! cfg_parser $qeman_file ; then
 source "${0%/*}"/bash-ini-parser
+
+# Parse the config
+if ! cfg_parser "$qeman_file" ; then
 	echo "error 1"
 	exit 1
 fi
