@@ -94,7 +94,6 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
   - lists the current setups and their settings
   - only the setups in the config file specified by the mode will be considered. eg, if in local mode, the setups in the global config file will not be considered, and vice versa. If the config file is specified in `QEMAN_CONFIG_FILE`, then only those setups will be considered.
   - currently, the only supported setup settings are the ones listed below in the `comp` section
-- qeman setup pcs
 
 #### comp
 
