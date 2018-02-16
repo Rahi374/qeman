@@ -1,6 +1,39 @@
 #!/bin/bash
 
-source bash-init-parser
+default_mode=global
+current_mode=$default_mode
+mode_file=/tmp/qeman_mode
+
+# Handling the mode commands
+if [ "$1" == mode ]; then
+	if [ "$2" == local ]; then
+		echo local > $mode_file
+		echo "Set qeman mode to local"
+	elif [ "$2" == global ]; then
+		echo global > $mode_file
+		echo "Set qeman mode to global"
+	else
+		if [ -s $mode_file ]; then
+			cat $mode_file
+		else
+			echo $default_mode > $mode_file
+			cat $mode_file
+		fi
+	fi
+	exit 0
+fi
+
+# Setting the mode on load
+# Default is already set, so set only if the mode file exists
+if [ -s $mode_file ]; then
+	current_mode=$(cat $mode_file)
+fi
+
+# Error checking the mode file
+if [ $current_mode != local -a $current_mode != global ]; then
+	echo "Invalid mode"
+	exit 1
+fi
 
 # Read config
 # Maybe from -c
@@ -17,6 +50,7 @@ elif [ -f $HOME/.config/qeman/setups ]
 fi
 
 if ! cfg_parser $qeman_file ; then
+source "${0%/*}"/bash-ini-parser
 	echo "error 1"
 	exit 1
 fi
