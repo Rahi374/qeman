@@ -116,7 +116,10 @@ setup_rm() {
 	fi	
 
 	cfg_writer > $qeman_file
-	# TODO: implement rm
+	echo "Removing $1"
+	sed "/\[$1\]/,"'/\[/{//!d}' $qeman_file | sed "/\[$1\]/d" > $tmpfs/$config_fn
+	cp $tmpfs/$config_fn $qeman_file
+	rm $tmpfs/$config_fn
 	parse_config
 }
 
