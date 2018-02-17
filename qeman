@@ -6,6 +6,7 @@ default_mode=global
 current_mode=$default_mode
 mode_file=$tmpfs/qeman_mode
 #mode_file=./.qeman-mode
+local_mode_file=./.qeman_mode
 
 # These are the possible filenames and paths of the config file
 config_fn=qeman.setups
@@ -169,14 +170,31 @@ run_machine() {
 
 # Handling the mode commands
 if [[ $1 == mode ]]; then
+	# set mode to local
 	if [[ $2 == local ]]; then
-		echo local > $mode_file
 		echo "qeman mode set to local"
+		if [[ $3 == save ]]; then
+			echo "saving qeman mode to $local_mode_file"
+			echo local > $local_mode_file
+		else
+			echo local > $mode_file
+		fi
+
+	# set mode to global
 	elif [[ $2 == global ]]; then
-		echo global > $mode_file
 		echo "qeman mode set to global"
+		if [[ $3 == save ]]; then
+			echo "saving qeman mode to $local_mode_file"
+			echo global > $local_mode_file
+		else
+			echo global > $mode_file
+		fi
+
+	# get mode
 	else
-		if [[ -s $mode_file ]]; then
+		if [[ -s $local_mode_file ]]; then
+			cat $local_mode_file
+		elif [[ -s $mode_file ]]; then
 			cat $mode_file
 		else
 			echo $default_mode > $mode_file
@@ -188,7 +206,9 @@ fi
 
 # Setting the mode on load
 # Default is already set, so set only if the mode file exists
-if [ -s $mode_file ]; then
+if [[ -s $local_mode_file ]]; then
+	current_mode=$(cat $local_mode_file)
+elif [ -s $mode_file ]; then
 	current_mode=$(cat $mode_file)
 fi
 
@@ -209,6 +229,7 @@ elif [[ $current_mode == global && -s $home_config_fn ]]; then
 	qeman_file="$home_config_fn"
 else
 	echo "No qeman file found"
+	echo "Check your global/local mode setting"
 	exit 1
 fi
 
