@@ -72,13 +72,19 @@ arch=x86_64
 - **qeman mode**
   - this will display current qeman mode
   - will return local or global
-- **qeman mode local**
+- **qeman mode local [save]**
   - this will set the current qeman mode to local
   - local mode means that qeman will autoload the `qeman.setups` file from the current working directory
   - the qeman mode setting is global, meaning that if you `cd` to another directory, the qeman mode will not change
-- **qeman mode global**
+  - if `save` is specified, then this mode setting will be saved to `./.qeman_mode`
+    - this mode file has higher priority than the system-wide one - eg. if system-wide is global mode but local-mode is local, then setting will be local
+    - delete this file if you want the system-wide qeman mode to be applied instead
+- **qeman mode global [save]**
   - this will set the current qeman mode to global
   - global mode means that qeman will autoload the `qeman.setups` file from `$XDG_CONFIG_HOME/qeman/`, or if that fails, then from `$HOME/.config/qeman/`.
+  - if `save` is specified, then this mode setting will be saved to `./.qeman_mode`
+    - this mode file has higher priority than the system-wide one - eg. if system-wide is local mode but local-mode is global, then setting will be global
+    - delete this file if you want the system-wide qeman mode to be applied instead
 
 It should be noted that the `qeman.setups` file location can be overwritten by the environment variable `QEMAN_CONFIG_FILE`.
 
