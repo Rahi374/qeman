@@ -15,6 +15,8 @@ The only dependency is bash.
 is a dependency as well, and these two are required to be in the
 same directory.~~
 
+Just put the `qeman` script somewhere in your path. That's it.
+
 (`bash-ini-parser` came from <https://github.com/albfan/bash-ini-parser>)
 
 ## How it works
@@ -55,6 +57,68 @@ kvm=enable
 boot_from_disk=enable
 arch=x86_64
 ```
+
+Note that in this example file `arch0` will not be able to run because
+no hard drive is specified. Kernel and initrd qemu options are not
+supported natively at the moment, but still may be speficied in the
+`opts` setting.
+
+## Writing the config file
+
+This is honestly the most important section of qeman. Without knowing how to
+make the config file, there is no use in the tool.
+
+Using ini terminology, the section name corresponds to qeman's setup name.
+Within each section, there are key-value pairs, where the keys are values are
+separated by `=` and each pair is separated by newline.
+
+The currently available keys are:
+- `hda`
+  - specifies the disk image file that will coresspond to `/dev/sda` in the VM
+- `hdb`
+  - specifies the disk image file that will coresspond to `/dev/sdb` in the VM
+- `hdc`
+  - specifies the disk image file that will coresspond to `/dev/sdc` in the VM
+- `hdd`
+  - specifies the disk image file that will coresspond to `/dev/sdd` in the VM
+- `hde`
+  - specifies the disk image file that will coresspond to `/dev/sde` in the VM
+- `cd`
+  - specifies the disk image file that will coresspond to `/dev/cdrom` or `/dev/sr0` in the VM
+- `portfwd`
+  - specifies port forwarding option
+  - format: `[tcp|udp]::host_port-:vm_port`
+  - automatically specifies netdev and device with `user,id=user.0` and `e1000`, so don't use this option if you want other network settings
+- `mem`
+  - specifies amount of memory for the VM
+  - in megabytes - no need to specify units
+- `localtime`
+  - format: `enable|disable` - or simply nonexistant
+  - is filled in automatically if `qeman setup new NAME` is used, because ini requires that each section have at least one member
+- `kvm`
+  - format: `enable|disable` - or simply nonexistant
+  - specifies `-enable-kvm` - also automatically prepends `sudo`
+- `boot_from_disk`
+  - format: `enabme|disable` - or simply nonexistant
+  - specifies `-boot d` - really this option should be called `boot_from_cd` instead
+- `arch`
+  - specifies the type of `qemu-system-` to execute
+  - is required
+
+There are a few special keys as well:
+- `cmd`
+  - this is a special option that allows you to specify an entire command to execute
+  - if this is specified, all other options for the section will be ignored, and this cmd will be executed on `qeman run NAME`
+- `opts`
+  - this is a special option that allows you to specify arguments to pass to qemu
+  - it is just a string (make sure they are double-quote delimited in the config) that will get appended to the qemu command on `qeman run NAME`
+  - use this to specify your own network device, for example
+- `prehook`
+  - this is an entire command that will be executed before the qemu invokation itself
+  - it is just a string (make sure they are double-quote delimited in the confg) that gets prepended before the qemu command and separated by semicolon on `qeman run NAME`
+- `posthook`
+  - this is an entire command that will be executed after the qemu invokation itself
+  - it is just a string (make sure they are double-quote delimited in the confg) that gets appended after the qemu command and separated by semicolon on `qeman run NAME`
 
 ### Functions
 
@@ -115,6 +179,9 @@ Aliases have been added such that `setup` can be omitted. In this case `qeman se
     - if `-l` is specified then the settings of each setup will be displayed as well
 
 #### comp
+
+I'm not seeing any point in implementing these if users can just edit config files.
+I'll document the config options better, though.
 
 - qeman comp set/clear hdX NAME
 - qeman comp set/clear cd NAME
