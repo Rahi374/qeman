@@ -22,6 +22,9 @@ qeman_config_file=""
 # Source the config parser
 source "${0%/*}"/bash-ini-parser
 
+
+### Function definitions
+
 print_setups() {
 	if [[ -n $1 && $1 == "-l" ]]; then
 		cat $qeman_file | sed 's/^/  /g' | sed 's/  \[/\[/g'
@@ -168,6 +171,9 @@ run_machine() {
 	fi
 }
 
+# End function definitions
+
+
 # Handling the mode commands
 if [[ $1 == mode ]]; then
 	# set mode to local
@@ -218,7 +224,7 @@ if [ $current_mode != local -a $current_mode != global ]; then
 	exit 1
 fi
 
-# Read config
+# Choose config file
 if [[ -n $QEMAN_CONFIG_FILE ]]; then
 	qeman_file="$QEMAN_CONFIG_FILE"
 elif [[ $current_mode == local ]]; then
