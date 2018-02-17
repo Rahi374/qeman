@@ -62,7 +62,10 @@ arch=x86_64
 
 #### run
 
-- qeman run [-bg] NAME
+- **qeman run [-bg] NAME**
+  - runs qemu with settings as specified in the setups file
+  - NAME selects the setup from the file
+  - runs in foreground by default, unless `-bg` is specified
 
 #### mode
 
@@ -81,6 +84,8 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 
 #### setup
 
+Aliases have been added such that `setup` can be omitted. In this case `qeman setup ls` is equivalent to `qeman ls`, for example.
+
 - **qeman setup new NAME**
   - adds a new section (ie. "setup") called NAME to the setups file
   - enables `localtime` by default, since the ini parser will break if there's no key-value pairs in a section :/
@@ -95,10 +100,13 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
   - moving setups between setups files is another thing that this command does *not* do
 - **qeman setup rm NAME**
   - removes the section/setup called NAME including its children key-value pairs
-- **qeman setup ls**
+- **qeman setup ls [-l]**
   - lists the current setups and their settings
   - only the setups in the config file specified by the mode will be considered. eg, if in local mode, the setups in the global config file will not be considered, and vice versa. If the config file is specified in `QEMAN_CONFIG_FILE`, then only those setups will be considered.
-  - currently, the only supported setup settings are the ones listed below in the `comp` section
+  - ~~currently, the only supported setup settings are the ones listed below in the `comp` section~~
+    - all setttings will be displayed
+  - by default only the list of setups will be displayed
+    - if `-l` is specified then the settings of each setup will be displayed as well
 
 #### comp
 
