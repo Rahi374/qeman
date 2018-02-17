@@ -93,7 +93,12 @@ run_machine() {
 	fi
 
 	cfg_unset
-	cfg_section_$1
+	if ! cfg_section_$1 2> /dev/null; then
+		echo "Unrecognized setup '$1'"
+		echo "List of available setups":
+		eval "$0 ls"
+		exit 1
+	fi
 
 	run_cmd=""
 
