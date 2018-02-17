@@ -40,6 +40,10 @@ All qeman operations/comands are done on the setups file.
 
 Example setups file:
 ```
+[arch0]
+localtime=enable
+kvm=enable
+boot_from_disk=disable
 [arch2]
 hda=~/disk-images/hd/arch2.qcow2
 hdb=~/disk-images/hd/hdrive.qcow2
@@ -78,7 +82,7 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 #### setup
 
 - **qeman setup new NAME**
-  - adds a new section called NAME (ie. "setup") to the setups file
+  - adds a new section (ie. "setup") called NAME to the setups file
   - enables `localtime` by default, since the ini parser will break if there's no key-value pairs in a section :/
     - `localtime` was chosen as the default because I anticipated that this is probably the best (most useful and least detrimental) "default" option
   - `kvm` and `boot_from_disk` will appear as disabled; this is because these two (along with `localtime`) are assumed to be disabled if they are not specified.
@@ -89,7 +93,8 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
   - renames the section SRC to section DEST
   - that's it. Also, there's no overwriting; only simple renaming.
   - moving setups between setups files is another thing that this command does *not* do
-- qeman setup rm NAME
+- **qeman setup rm NAME**
+  - removes the section/setup called NAME including its children key-value pairs
 - **qeman setup ls**
   - lists the current setups and their settings
   - only the setups in the config file specified by the mode will be considered. eg, if in local mode, the setups in the global config file will not be considered, and vice versa. If the config file is specified in `QEMAN_CONFIG_FILE`, then only those setups will be considered.
