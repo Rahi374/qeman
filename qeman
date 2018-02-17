@@ -36,6 +36,7 @@ setup_new() {
 	fi
 
 	cfg_writer > $qeman_file
+	echo "Adding new setup $1"
 	echo "[$1]" >> $qeman_file
 	echo "localtime=enable" >> $qeman_file
 	parse_config
