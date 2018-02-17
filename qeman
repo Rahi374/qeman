@@ -152,9 +152,31 @@ if [[ $1 == setup ]]; then
 	elif [[ $2 == rm ]]; then
 		setup_rm $3
 	elif [[ $2 == ls ]]; then
-		print_setups
+		print_setups $3
 	else
 		echo "Unrecognized command: $2"
 	fi
+	exit
 fi
 # End command: setup
+
+
+# Aliases for setup
+if [[ $1 == new ]]; then
+	setup_new $2
+elif [[ $1 == cp ]]; then
+	setup_cp $2 $3
+elif [[ $1 == mv ]]; then
+	setup_mv $2 $3
+elif [[ $1 == rm ]]; then
+	setup_rm $2
+elif [[ $1 == ls ]]; then
+	print_setups $2
+else
+	echo "Unrecognized alias: $2"
+	if [[ $1 == add ]]; then
+		echo "Did you mean 'new'?"
+	fi
+fi
+exit
+# End aliases for setup
