@@ -11,9 +11,9 @@ settings are listed/suggested below.
 
 The only dependency is bash.
 
-Until I move `bash-ini-parser` into the `qeman` script file, that
+~~Until I move `bash-ini-parser` into the `qeman` script file, that
 is a dependency as well, and these two are required to be in the
-same directory.
+same directory.~~
 
 (`bash-ini-parser` came from <https://github.com/albfan/bash-ini-parser>)
 
