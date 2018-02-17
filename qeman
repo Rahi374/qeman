@@ -85,6 +85,82 @@ setup_rm() {
 	parse_config
 }
 
+run_machine() {
+	if [[ -z $1 ]]; then
+		echo "No setup specified"
+		exit 1
+	fi
+
+	cfg_unset
+	cfg_section_$1
+
+	run_cmd=""
+
+	# Add prehook
+	if [[ -n $prehook ]]; then
+		run_cmd="$prehook; $run_cmd;"
+	fi
+
+	# Add cmd
+	# if cmd doesn't exist, then build it from the config
+	if [[ -n $cmd ]]; then
+		run_cmd="$run_cmd $cmd"
+	else
+		# Add arch
+		# So far run_cmd only has prehook so we need semicolon
+
+		# kvm needs sudo so add that first if we need it
+		if [[ -n $kvm && $kvm == enable ]]; then
+			run_cmd="$run_cmd sudo"; fi
+
+		run_cmd="$run_cmd qemu-system-$arch"
+
+		# Add all the options that we know how to deal with
+		if [[ -n $hda ]]; then
+			run_cmd="$run_cmd -hda $hda"; fi
+		if [[ -n $hdb ]]; then
+			run_cmd="$run_cmd -hdb $hdb"; fi
+		if [[ -n $hdc ]]; then
+			run_cmd="$run_cmd -hdc $hdc"; fi
+		if [[ -n $hdd ]]; then
+			run_cmd="$run_cmd -hdd $hdd"; fi
+		if [[ -n $hde ]]; then
+			run_cmd="$run_cmd -hde $hde"; fi
+		if [[ -n $cd ]]; then
+			run_cmd="$run_cmd -cdrom $cd"; fi
+		if [[ -n $portfwd ]]; then
+			run_cmd="$run_cmd -netdev user,id=user.0,hostfwd=$portfwd -device e1000,netdev=user.0"; fi
+
+		if [[ -n $mem ]]; then
+			run_cmd="$run_cmd -m $mem"; fi
+
+		if [[ -n $localtime && $localtime == enable ]]; then
+			run_cmd="$run_cmd -localtime"; fi
+
+		if [[ -n $kvm && $kvm == enable ]]; then
+			run_cmd="$run_cmd -enable-kvm"; fi
+
+		if [[ -n $boot_from_cd && $boot_from_cd == enable ]]; then
+			run_cmd="$run_cmd -boot d"; fi
+	fi
+
+	# Add other options
+	if [[ -n $opts ]]; then
+		run_cmd="$run_cmd $opts"; fi
+
+	# Add posthook
+	if [[ -n $posthook ]]; then
+		run_cmd="$run_cmd; $posthook"; fi
+
+	# Run!
+	if [[ $2 == "-bg" ]]; then
+		eval $run_cmd & exit
+	else
+		eval $run_cmd
+		exit
+	fi
+}
+
 # Handling the mode commands
 if [ "$1" == mode ]; then
 	if [ "$2" == local ]; then
@@ -139,6 +215,17 @@ parse_config() {
 	fi
 }
 parse_config
+
+
+# Command: run
+if [[ $1 == run ]]; then
+	if [[ $2 == "-bg" ]]; then
+		run_machine $3 $2
+	else
+		run_machine $2
+	fi
+fi
+# End command: run
 
 
 # Command: setup
