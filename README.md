@@ -120,18 +120,18 @@ There are a few special keys as well:
   - this is an entire command that will be executed after the qemu invokation itself
   - it is just a string (make sure they are double-quote delimited in the confg) that gets appended after the qemu command and separated by semicolon on `qeman run NAME`
 
-### Functions
+## Functions
 
 (bold has been implemented)
 
-#### run
+### run
 
 - **qeman run [-bg] NAME**
   - runs qemu with settings as specified in the setups file
   - NAME selects the setup from the file
   - runs in foreground by default, unless `-bg` is specified
 
-#### mode
+### mode
 
 - **qeman mode**
   - this will display current qeman mode
@@ -152,7 +152,7 @@ There are a few special keys as well:
 
 It should be noted that the `qeman.setups` file location can be overwritten by the environment variable `QEMAN_CONFIG_FILE`.
 
-#### setup
+### setup
 
 Aliases have been added such that `setup` can be omitted. In this case `qeman setup ls` is equivalent to `qeman ls`, for example.
 
@@ -178,7 +178,7 @@ Aliases have been added such that `setup` can be omitted. In this case `qeman se
   - by default only the list of setups will be displayed
     - if `-l` is specified then the settings of each setup will be displayed as well
 
-#### comp
+### comp
 
 I'm not seeing any point in implementing these if users can just edit config files.
 I'll document the config options better, though.
@@ -192,7 +192,7 @@ I'll document the config options better, though.
 - qeman comp enable/disable boot_from_disk
 - qeman comp set/clear arch ARCH
 
-### Env vars
+## Env vars
 
 - TMPFS - defaults to /tmp, only neccesary if tmpfs not mounted at /tmp
 - QEMAN_CONFIG_FILE - specify non-default config file location
