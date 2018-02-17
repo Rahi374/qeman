@@ -62,7 +62,7 @@ arch=x86_64
 
 #### run
 
-- qeman run NAME
+- qeman run [-bg] NAME
 
 #### mode
 
@@ -102,14 +102,14 @@ It should be noted that the `qeman.setups` file location can be overwritten by t
 
 #### comp
 
-- qeman comp add/rm hdX NAME
-- qeman comp add/rm cd NAME
-- qeman comp add/rm portfwd [tcp|udp]::HOST_PORT-:GUEST_PORT
-- qeman comp mem VALUE
+- qeman comp set/clear hdX NAME
+- qeman comp set/clear cd NAME
+- qeman comp set/clear portfwd [tcp|udp]::HOST_PORT-:GUEST_PORT
+- qeman comp set/clear mem VALUE
 - qeman comp enable/disable localtime
 - qeman comp enable/disable kvm
 - qeman comp enable/disable boot_from_disk
-- qeman comp arch ARCH
+- qeman comp set/clear arch ARCH
 
 ### Env vars
 
