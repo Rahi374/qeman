@@ -33,6 +33,23 @@ print_setups() {
 	fi
 }
 
+print_help() {
+	cat << EOI
+qeman: A simple CLI manager for qemu setups
+
+Usages:
+- qeman run [-bg] NAME
+- qeman mode
+- qeman mode local [save]
+- qeman mode global [save]
+- qeman setup new NAME
+- qeman setup cp SRC DEST
+- qeman setup mv SRC DEST
+- qeman setup rm NAME
+- qeman setup ls [-l]
+EOI
+}
+
 setup_new() {
 	if [[ -z $1 ]]; then
 		echo "No name specified"
@@ -174,6 +191,12 @@ run_machine() {
 # End function definitions
 
 
+# Checking if the user is asking for help should be top priority
+if [[ -z $1 || $1 == "-h" || $1 == "--help" ]]; then
+	print_help
+	exit
+fi
+
 # Handling the mode commands
 if [[ $1 == mode ]]; then
 	# set mode to local
@@ -293,7 +316,7 @@ elif [[ $1 == rm ]]; then
 elif [[ $1 == ls ]]; then
 	print_setups $2
 else
-	echo "Unrecognized alias: $2"
+	echo "Unrecognized command: $1"
 	if [[ $1 == add ]]; then
 		echo "Did you mean 'new'?"
 	fi
