@@ -163,15 +163,15 @@ run_machine() {
 }
 
 # Handling the mode commands
-if [ "$1" == mode ]; then
-	if [ "$2" == local ]; then
+if [[ $1 == mode ]]; then
+	if [[ $2 == local ]]; then
 		echo local > $mode_file
 		echo "qeman mode set to local"
-	elif [ "$2" == global ]; then
+	elif [[ $2 == global ]]; then
 		echo global > $mode_file
 		echo "qeman mode set to global"
 	else
-		if [ -s $mode_file ]; then
+		if [[ -s $mode_file ]]; then
 			cat $mode_file
 		else
 			echo $default_mode > $mode_file
