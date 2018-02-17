@@ -22,49 +22,11 @@ qeman_config_file=""
 source "${0%/*}"/bash-ini-parser
 
 print_setups() {
-	setups=$(compgen -A function | grep cfg_section | sed 's/cfg_section_//g')
-	for i in $setups ; do
-		echo "[$i]"
-		cfg_unset
-		cfg_section_$i
-		if [[ -n $hda ]]; then
-			echo "  hda = $hda"; fi
-		if [[ -n $hdb ]]; then
-			echo "  hdb = $hdb"; fi
-		if [[ -n $hdc ]]; then
-			echo "  hdc = $hdc"; fi
-		if [[ -n $hdd ]]; then
-			echo "  hdd = $hdd"; fi
-		if [[ -n $hde ]]; then
-			echo "  hde = $hde"; fi
-		if [[ -n $cd ]]; then
-			echo "  cd = $cd"; fi
-		if [[ -n $portfwd ]]; then
-			echo "  portfwd = $portfwd"; fi
-		if [[ -n $mem ]]; then
-			echo "  mem = $mem"; fi
-
-		if [[ -z $localtime ]]; then
-			echo "  localtime = disable"
-		else
-			echo "  localtime = $localtime"
-		fi
-
-		if [[ -z $kvm ]]; then
-			echo "  kvm = disable"
-		else
-			echo "  kvm = $kvm"
-		fi
-
-		if [[ -z $boot_from_disk ]]; then
-			echo "  boot_from_disk = disable"
-		else
-			echo "  boot_from_disk = $boot_from_disk"
-		fi
-
-		if [[ -n $arch ]]; then
-			echo "  arch = $arch"; fi
-	done
+	if [[ -n $1 && $1 == "-l" ]]; then
+		cat $qeman_file | sed 's/^/  /g' | sed 's/  \[/\[/g'
+	else
+		cat $qeman_file | grep -vP "^[^\[].*[^\]]$" | tr -d "[]"
+	fi
 }
 
 setup_new() {
